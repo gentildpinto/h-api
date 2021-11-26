@@ -1,0 +1,26 @@
+version: "3.8"
+services:
+  h_api_database:
+    image: postgres:latest
+    container_name: h_api_database
+    environment:
+      - POSTGRES_USER=${DATABASE_USERNAME}
+      - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
+      - POSTGRES_DB=${DATABASE_NAME}
+    ports:
+      - 5432:5432
+    volumes:
+      - './docker/postgres/data:/var/lib/postgresql/data'
+
+  h_api:
+    build:
+      dockerfile: Dockerfile.dev
+    image: h_api
+    container_name: h_api
+    ports:
+      - 8000:8000
+    depends_on:
+      - h_api_database
+    volumes:
+      - ./:/app
+    restart: always    
