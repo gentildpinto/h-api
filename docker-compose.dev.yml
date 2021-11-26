@@ -15,7 +15,6 @@ services:
   h_api:
     build:
       dockerfile: Dockerfile.dev
-    image: h_api
     container_name: h_api
     ports:
       - 8000:8000
