@@ -37,7 +37,7 @@ func New(port string, readTimeout int, writeTimeout int, debug bool) *Server {
 
 func (s *Server) Run() {
 	srvr := &http.Server{
-		Addr:         s.Port,
+		Addr:         ":" + s.Port,
 		ReadTimeout:  time.Duration(s.ReadTimeout) * time.Second,
 		WriteTimeout: time.Duration(s.WriteTimeout) * time.Second,
 	}
