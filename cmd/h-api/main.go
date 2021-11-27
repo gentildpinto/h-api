@@ -7,17 +7,12 @@ import (
 	"github.com/subosito/gotenv"
 )
 
-var (
-	version = "0.0.1"
-)
-
 func init() {
 	gotenv.Load()
 }
 
 func main() {
-	if err := app.Run(version); err != nil {
+	if err := app.Run(); err != nil {
 		log.Fatal(err)
 	}
-	println("Hello, World!")
 }

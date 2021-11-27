@@ -4,15 +4,15 @@ import (
 	"os"
 
 	"github.com/gentildpinto/h-api/internal/server"
-	"github.com/gentildpinto/h-api/internal/tools/logger"
+	"github.com/gentildpinto/h-api/pkg/logger"
 )
 
 var (
 	appPort = "80"
 )
 
-func Run(appVersion string) (err error) {
-	if err = logger.Initialize(appVersion); err != nil {
+func Run() (err error) {
+	if err = logger.Init(); err != nil {
 		return
 	}
 
