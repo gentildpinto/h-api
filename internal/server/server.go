@@ -7,6 +7,8 @@ import (
 	"os/signal"
 	"time"
 
+	delivery "github.com/gentildpinto/h-api/internal/delivery/http"
+	"github.com/gentildpinto/h-api/internal/service"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 )
@@ -26,6 +28,12 @@ func New(port string, readTimeout int, writeTimeout int, debug bool) *Server {
 	)
 
 	e.Debug = debug
+
+	services := service.NewServices(service.Dependencies{})
+
+	handlers := delivery.NewHandler(services)
+
+	handlers.InitRoutes(e)
 
 	return &Server{
 		Port:          port,
