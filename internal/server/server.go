@@ -7,6 +7,7 @@ import (
 	"os/signal"
 	"time"
 
+	"github.com/gentildpinto/h-api/internal/config"
 	delivery "github.com/gentildpinto/h-api/internal/delivery/http"
 	"github.com/gentildpinto/h-api/internal/service"
 	"github.com/labstack/echo/v4"
@@ -20,14 +21,14 @@ type Server struct {
 	HttpFramework *echo.Echo
 }
 
-func New(port string, readTimeout int, writeTimeout int, debug bool) *Server {
+func New(cfg *config.Config) *Server {
 	e := echo.New()
 	e.Use(
 		middleware.LoggerWithConfig(middleware.LoggerConfig{Format: "[${time_rfc3339}] ${status} ${method} ${host}${path} ${latency_human}\n"}),
 		middleware.Recover(),
 	)
 
-	e.Debug = debug
+	e.Debug = cfg.AppDebug
 
 	services := service.NewServices(service.Dependencies{})
 
@@ -36,9 +37,9 @@ func New(port string, readTimeout int, writeTimeout int, debug bool) *Server {
 	handlers.InitRoutes(e)
 
 	return &Server{
-		Port:          port,
-		ReadTimeout:   readTimeout,
-		WriteTimeout:  writeTimeout,
+		Port:          cfg.AppPort,
+		ReadTimeout:   cfg.ServerReadTimeout,
+		WriteTimeout:  cfg.ServerWriteTimeout,
 		HttpFramework: e,
 	}
 }

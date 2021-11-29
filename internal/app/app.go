@@ -1,14 +1,9 @@
 package app
 
 import (
-	"os"
-
+	"github.com/gentildpinto/h-api/internal/config"
 	"github.com/gentildpinto/h-api/internal/server"
 	"github.com/gentildpinto/h-api/pkg/logger"
-)
-
-var (
-	appPort = "80"
 )
 
 func Run() (err error) {
@@ -16,13 +11,9 @@ func Run() (err error) {
 		return
 	}
 
-	if os.Getenv("PORT") != "" {
-		appPort = os.Getenv("PORT")
-	}
+	cfg := config.New()
 
-	debug := os.Getenv("ENVIRONMENT") != "production" || os.Getenv("DEBUG") == "true"
-
-	s := server.New(appPort, 60, 60, debug)
+	s := server.New(cfg)
 
 	s.Run()
 
