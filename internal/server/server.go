@@ -20,14 +20,12 @@ type Server struct {
 	WriteTimeout int
 }
 
-func New() *echo.Echo {
+func New(services *service.Services) *echo.Echo {
 	e := echo.New()
 	e.Use(
 		middleware.LoggerWithConfig(middleware.LoggerConfig{Format: "[${time_rfc3339}] ${status} ${method} ${host}${path} ${latency_human}\n"}),
 		middleware.Recover(),
 	)
-
-	services := service.NewServices(service.Dependencies{})
 
 	handlers := delivery.NewHandler(services)
 

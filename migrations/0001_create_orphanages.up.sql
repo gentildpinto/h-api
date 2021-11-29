@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS orphanages (
     instructions     TEXT NOT NULL,
     opened_hours     VARCHAR(10) NOT NULL,
     open_on_weekends BOOLEAN NOT NULL,
-    images           JSON NOT NULL,
+    images           TEXT[] NOT NULL,
     created_at       TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at       TIMESTAMP NULL,
     deleted_at       TIMESTAMP NULL

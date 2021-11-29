@@ -12,12 +12,23 @@ var (
 	serverWriteTimeout = 60
 )
 
-type Config struct {
-	AppPort            string
-	AppDebug           bool
-	ServerReadTimeout  int
-	ServerWriteTimeout int
-}
+type (
+	Postgresql struct {
+		User     string
+		Host     string
+		Port     string
+		DBName   string
+		SSLMode  string
+		Password string
+	}
+	Config struct {
+		AppPort            string
+		AppDebug           bool
+		ServerReadTimeout  int
+		ServerWriteTimeout int
+		Postgresql         Postgresql
+	}
+)
 
 func New() *Config {
 	if os.Getenv("PORT") != "" {
@@ -41,5 +52,13 @@ func New() *Config {
 		AppDebug:           debugApp,
 		ServerReadTimeout:  serverReadTimeout,
 		ServerWriteTimeout: serverWriteTimeout,
+		Postgresql: Postgresql{
+			User:     os.Getenv("DATABASE_USERNAME"),
+			Host:     os.Getenv("DATABASE_HOST"),
+			Port:     os.Getenv("DATABASE_PORT"),
+			DBName:   os.Getenv("DATABASE_NAME"),
+			SSLMode:  os.Getenv("DATABASE_SSL_MODE"),
+			Password: os.Getenv("DATABASE_PASSWORD"),
+		},
 	}
 }

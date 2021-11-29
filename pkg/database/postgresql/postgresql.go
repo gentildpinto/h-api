@@ -5,6 +5,7 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/gentildpinto/h-api/internal/config"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -13,9 +14,9 @@ import (
 
 var maxDBConnections = 500
 
-func New(user, password, host, port, dbName, sslMode string) (*gorm.DB, error) {
+func New(cfg config.Postgresql) (*gorm.DB, error) {
 	postgresConfig := postgres.Config{
-		DSN:                  "host=" + host + " user=" + user + " password=" + password + " dbname=" + dbName + " port=" + port + " sslmode=" + sslMode + " TimeZone=Africa/Luanda",
+		DSN:                  "host=" + cfg.Host + " user=" + cfg.User + " password=" + cfg.Password + " dbname=" + cfg.DBName + " port=" + cfg.Port + " sslmode=" + cfg.SSLMode + " TimeZone=Africa/Luanda",
 		PreferSimpleProtocol: true,
 	}
 
