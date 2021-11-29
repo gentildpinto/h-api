@@ -7,7 +7,6 @@ import (
 	"os/signal"
 	"time"
 
-	"github.com/gentildpinto/h-api/internal/config"
 	delivery "github.com/gentildpinto/h-api/internal/delivery/http"
 	"github.com/gentildpinto/h-api/internal/service"
 	"github.com/labstack/echo/v4"
@@ -15,20 +14,18 @@ import (
 )
 
 type Server struct {
-	Port          string
-	ReadTimeout   int
-	WriteTimeout  int
-	HttpFramework *echo.Echo
+	Port         string
+	Debug        bool
+	ReadTimeout  int
+	WriteTimeout int
 }
 
-func New(cfg *config.Config) *Server {
+func New() *echo.Echo {
 	e := echo.New()
 	e.Use(
 		middleware.LoggerWithConfig(middleware.LoggerConfig{Format: "[${time_rfc3339}] ${status} ${method} ${host}${path} ${latency_human}\n"}),
 		middleware.Recover(),
 	)
-
-	e.Debug = cfg.AppDebug
 
 	services := service.NewServices(service.Dependencies{})
 
@@ -36,24 +33,21 @@ func New(cfg *config.Config) *Server {
 
 	handlers.InitRoutes(e)
 
-	return &Server{
-		Port:          cfg.AppPort,
-		ReadTimeout:   cfg.ServerReadTimeout,
-		WriteTimeout:  cfg.ServerWriteTimeout,
-		HttpFramework: e,
-	}
+	return e
 }
 
-func (s *Server) Run() {
+func Run(e *echo.Echo, s *Server) {
 	srvr := &http.Server{
 		Addr:         ":" + s.Port,
 		ReadTimeout:  time.Duration(s.ReadTimeout) * time.Second,
 		WriteTimeout: time.Duration(s.WriteTimeout) * time.Second,
 	}
 
+	e.Debug = s.Debug
+
 	go func() {
-		if err := s.HttpFramework.StartServer(srvr); err != nil && err != http.ErrServerClosed {
-			s.HttpFramework.Logger.Fatal("shutting down the server", err)
+		if err := e.StartServer(srvr); err != nil && err != http.ErrServerClosed {
+			e.Logger.Fatal("shutting down the server", err)
 		}
 	}()
 
@@ -65,7 +59,7 @@ func (s *Server) Run() {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
-	if err := s.HttpFramework.Shutdown(ctx); err != nil {
-		s.HttpFramework.Logger.Fatal("server shutdown", err)
+	if err := e.Shutdown(ctx); err != nil {
+		e.Logger.Fatal("server shutdown", err)
 	}
 }
