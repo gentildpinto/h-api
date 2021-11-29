@@ -13,9 +13,14 @@ func Run() (err error) {
 
 	cfg := config.New()
 
-	s := server.New(cfg)
+	e := server.New()
 
-	s.Run()
+	server.Run(e, &server.Server{
+		Port:         cfg.AppPort,
+		Debug:        cfg.AppDebug,
+		ReadTimeout:  cfg.ServerReadTimeout,
+		WriteTimeout: cfg.ServerWriteTimeout,
+	})
 
 	return
 }
