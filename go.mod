@@ -33,10 +33,7 @@ require (
 	github.com/jinzhu/now v1.1.2 // indirect
 )
 
-require (
-	github.com/lib/pq v1.10.2 // indirect
-	gorm.io/driver/postgres v1.2.3
-)
+require gorm.io/driver/postgres v1.2.3
 
 require (
 	github.com/google/uuid v1.3.0
@@ -48,4 +45,5 @@ require (
 	github.com/jackc/pgservicefile v0.0.0-20200714003250-2b9c44734f2b // indirect
 	github.com/jackc/pgtype v1.9.0 // indirect
 	github.com/jackc/pgx/v4 v4.14.0 // indirect
+	github.com/lib/pq v1.10.2
 )
