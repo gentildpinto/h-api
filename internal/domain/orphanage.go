@@ -9,7 +9,7 @@ type Orphanage struct {
 	Latitude       float64        `json:"latitude"`
 	Longitude      float64        `json:"longitude"`
 	Instructions   string         `json:"instructions"`
-	OpendHours     string         `json:"opend_hours"`
+	OpenedHours    string         `json:"opened_hours"`
 	OpenOnWeekends bool           `json:"open_on_weekends"`
 	Images         pq.StringArray `json:"images" gorm:"type:text[]"`
 }
