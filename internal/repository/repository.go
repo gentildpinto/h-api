@@ -8,6 +8,7 @@ import (
 type (
 	Orphanages interface {
 		All() ([]domain.Orphanage, error)
+		FindByID(id string) (domain.Orphanage, error)
 	}
 
 	Repositories struct {

@@ -20,3 +20,7 @@ func NewOrphanagesService(repo repository.Orphanages) *OrphanagesService {
 func (s *OrphanagesService) All() ([]domain.Orphanage, error) {
 	return s.repo.All()
 }
+
+func (s *OrphanagesService) FindByID(id string) (domain.Orphanage, error) {
+	return s.repo.FindByID(id)
+}
