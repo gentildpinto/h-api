@@ -24,3 +24,7 @@ func (s *OrphanagesService) All() ([]domain.Orphanage, error) {
 func (s *OrphanagesService) FindByID(id string) (domain.Orphanage, error) {
 	return s.repo.FindByID(id)
 }
+
+func (s *OrphanagesService) Create(orphanage *domain.Orphanage) error {
+	return s.repo.Create(orphanage)
+}

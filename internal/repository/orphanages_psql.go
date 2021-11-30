@@ -31,3 +31,10 @@ func (r *OrphanagesRepo) FindByID(id string) (orphanage domain.Orphanage, err er
 	}
 	return
 }
+
+func (r *OrphanagesRepo) Create(orphanage *domain.Orphanage) (err error) {
+	if err = r.db.Create(&orphanage).Error; err != nil {
+		logger.Error(err)
+	}
+	return
+}

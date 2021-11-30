@@ -17,6 +17,7 @@ type (
 	Orphanages interface {
 		All() ([]domain.Orphanage, error)
 		FindByID(id string) (domain.Orphanage, error)
+		Create(orphanage *domain.Orphanage) error
 	}
 )
 
