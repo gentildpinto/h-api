@@ -1,5 +1,7 @@
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
 CREATE TABLE IF NOT EXISTS orphanages (
-    id               uuid DEFAULT gen_random_uuid() PRIMARY KEY,
+    id               uuid DEFAULT uuid_generate_v4() PRIMARY KEY,
     name             VARCHAR(50) NOT NULL,
     latitude         FLOAT NOT NULL,
     longitude        FLOAT NOT NULL,
