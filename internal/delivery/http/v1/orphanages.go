@@ -9,16 +9,18 @@ import (
 func (h *Handler) initOrphanagesRoutes(e *echo.Group) {
 	orphanages := e.Group("/orphanages")
 	{
-		orphanages.GET("/", h.getOrphanages)
+		orphanages.GET("", getOrphanages(h))
 	}
 }
 
-func (h *Handler) getOrphanages(c echo.Context) error {
-	orphanages, err := h.services.Orphanages.All()
+func getOrphanages(h *Handler) echo.HandlerFunc {
+	return func(c echo.Context) error {
+		orphanages, err := h.services.Orphanages.All()
 
-	if err != nil {
-		return c.JSON(http.StatusInternalServerError, err)
+		if err != nil {
+			return c.JSON(http.StatusInternalServerError, err)
+		}
+
+		return c.JSON(http.StatusOK, orphanages)
 	}
-
-	return c.JSON(http.StatusOK, orphanages)
 }
