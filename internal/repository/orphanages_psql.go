@@ -1,6 +1,8 @@
 package repository
 
 import (
+	"mime/multipart"
+
 	"github.com/gentildpinto/h-api/internal/domain"
 	"github.com/gentildpinto/h-api/pkg/logger"
 	"github.com/google/uuid"
@@ -32,9 +34,20 @@ func (r *OrphanagesRepo) FindByID(id string) (orphanage domain.Orphanage, err er
 	return
 }
 
-func (r *OrphanagesRepo) Create(orphanage *domain.Orphanage) (err error) {
-	if err = r.db.Create(&orphanage).Error; err != nil {
+func (r *OrphanagesRepo) Create(orphanage *domain.Orphanage, images []*multipart.FileHeader) (err error) {
+	tx := r.db.Begin()
+
+	if err = tx.Create(&orphanage).Error; err != nil {
 		logger.Error(err)
+		tx.Rollback()
+		return
 	}
-	return
+
+	if err = createImages(tx, orphanage.ID, images); err != nil {
+		logger.Error(err)
+		tx.Rollback()
+		return
+	}
+
+	return tx.Commit().Error
 }
