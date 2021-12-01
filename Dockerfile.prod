@@ -8,6 +8,6 @@ WORKDIR /app
 
 RUN go mod download
 
-RUN go build -o ./bin/h-api ./cmd/h-api
+RUN go build -o ./bin/h-api .
 
 CMD ["/bin/h-api"]
