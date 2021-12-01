@@ -3,7 +3,7 @@ tmp_dir = "bin"
 
 [build]
   bin = "./bin/h-api"
-  cmd = "go build -o ./bin/h-api ./cmd/h-api"
+  cmd = "go build -o ./bin/h-api ."
   delay = 1000
   exclude_dir = ["assets", "tmp", "vendor", "bin", "docker"]
   exclude_file = []
