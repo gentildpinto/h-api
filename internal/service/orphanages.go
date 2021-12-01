@@ -1,6 +1,8 @@
 package service
 
 import (
+	"mime/multipart"
+
 	"github.com/gentildpinto/h-api/internal/domain"
 	"github.com/gentildpinto/h-api/internal/repository"
 )
@@ -25,6 +27,6 @@ func (s *OrphanagesService) FindByID(id string) (domain.Orphanage, error) {
 	return s.repo.FindByID(id)
 }
 
-func (s *OrphanagesService) Create(orphanage *domain.Orphanage) error {
-	return s.repo.Create(orphanage)
+func (s *OrphanagesService) Create(orphanage *domain.Orphanage, images []*multipart.FileHeader) error {
+	return s.repo.Create(orphanage, images)
 }
