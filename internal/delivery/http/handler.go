@@ -23,6 +23,8 @@ func (h *Handler) InitRoutes(e *echo.Echo) {
 		})
 	})
 
+	e.Static("/public/uploads", "public/uploads")
+
 	handlerV1 := v1.NewHandler(h.services)
 	api := e.Group("/api")
 	{
