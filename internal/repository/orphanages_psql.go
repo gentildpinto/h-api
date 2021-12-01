@@ -16,7 +16,7 @@ func NewOrphanagesRepo(db *gorm.DB) *OrphanagesRepo {
 }
 
 func (r *OrphanagesRepo) All() (orphanages []domain.Orphanage, err error) {
-	if err = r.db.Find(&orphanages).Error; err != nil {
+	if err = r.db.Preload("Images").Find(&orphanages).Error; err != nil {
 		logger.Error(err)
 	}
 	return
