@@ -2,6 +2,7 @@ package v1
 
 import (
 	"net/http"
+	"strconv"
 
 	"github.com/gentildpinto/h-api/internal/domain"
 	"github.com/labstack/echo/v4"
@@ -44,24 +45,29 @@ func getOrphanage(h *Handler) echo.HandlerFunc {
 
 func createOrphanage(h *Handler) echo.HandlerFunc {
 	return func(c echo.Context) error {
-		orphanageRequest := createOrphanagePayload{}
-
-		if err := c.Bind(&orphanageRequest); err != nil {
-			return c.JSON(http.StatusBadRequest, err)
-		}
+		latitude, _ := strconv.ParseFloat(c.FormValue("latitude"), 64)
+		longitude, _ := strconv.ParseFloat(c.FormValue("longitude"), 64)
+		openOnWeekends, _ := strconv.ParseBool(c.FormValue("open_on_weekends"))
 
 		orphanage := domain.Orphanage{
-			Name:           orphanageRequest.Name,
-			Latitude:       orphanageRequest.Latitude,
-			Longitude:      orphanageRequest.Longitude,
-			About:          orphanageRequest.About,
-			Instructions:   orphanageRequest.Instructions,
-			OpenedHours:    orphanageRequest.OpenedHours,
-			OpenOnWeekends: orphanageRequest.OpenOnWeekends,
-			Images:         orphanageRequest.Images,
+			Name:           c.FormValue("name"),
+			Latitude:       latitude,
+			Longitude:      longitude,
+			About:          c.FormValue("about"),
+			Instructions:   c.FormValue("instructions"),
+			OpenedHours:    c.FormValue("opened_hours"),
+			OpenOnWeekends: openOnWeekends,
 		}
 
-		if err := h.services.Orphanages.Create(&orphanage); err != nil {
+		form, err := c.MultipartForm()
+
+		if err != nil {
+			return c.JSON(http.StatusInternalServerError, err)
+		}
+
+		images := form.File["images"]
+
+		if err := h.services.Orphanages.Create(&orphanage, images); err != nil {
 			return c.JSON(http.StatusInternalServerError, err)
 		}
 
