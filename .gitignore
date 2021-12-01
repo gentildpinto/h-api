@@ -19,3 +19,7 @@ bin/
 .env
 docker/postgres/*
 !docker/postgres/.keep
+
+# uploads
+public/uploads/*
+!public/uploads/.keep
