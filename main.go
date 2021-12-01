@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 
 	"github.com/gentildpinto/h-api/internal/app"
@@ -12,6 +13,7 @@ func init() {
 }
 
 func main() {
+	fmt.Println("Starting server...")
 	if err := app.Run(); err != nil {
 		log.Fatal(err)
 	}
