@@ -27,7 +27,7 @@ func (r *OrphanagesRepo) All() (orphanages []domain.Orphanage, err error) {
 func (r *OrphanagesRepo) FindByID(id string) (orphanage domain.Orphanage, err error) {
 	uid, _ := uuid.Parse(id)
 
-	if err = r.db.First(&orphanage, uid).Error; err != nil {
+	if err = r.db.Preload("Images").First(&orphanage, uid).Error; err != nil {
 		logger.Error(err)
 		return domain.Orphanage{}, err
 	}
